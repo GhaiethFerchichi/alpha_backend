@@ -10,7 +10,7 @@ const typeStageRouter = require("express").Router();
 
 typeStageRouter.route("/").get(getAllTypeStages).post(createTypeStage);
 typeStageRouter
-  .route("/:Type_Stage_id")
+  .route("/:type_Stage_id")
   .get(getTypeStageById)
   .put(updateTypeStage)
   .delete(deleteTypeStage);

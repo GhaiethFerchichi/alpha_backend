@@ -1,5 +1,10 @@
 const Classe = require("../models/Classe.model");
+const Etudiant = require("../models/Etudiant.model");
 const Formation = require("../models/Formation.model");
+
+const ExcelJS = require("exceljs");
+const path = require("path");
+const fs = require("fs");
 
 /**
  * @swagger
@@ -260,10 +265,63 @@ const updateClass = async (req, res) => {
   }
 };
 
+const saveFromExcelClasse = async (req, res) => {
+  const { file } = req;
+  const { classe_id } = req.params;
+  const filePath = path.resolve(__dirname, "../uploads/excel", file.filename);
+
+  try {
+    // Create a new workbook and read the Excel file
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(filePath);
+
+    // Get the first worksheet
+    const worksheet = workbook.getWorksheet(1);
+
+    // Iterate through all rows in the worksheet
+    const rows = [];
+    worksheet.eachRow((row, rowNumber) => {
+      if (rowNumber > 1) {
+        const cin = row.getCell(1).value;
+        const name = row.getCell(2).value;
+        const email = row.getCell(3).value;
+        const dte_naiss = row.getCell(4).value;
+        const phone_nbr = row.getCell(5).value;
+
+        rows.push({ cin, name, email, dte_naiss, phone_nbr, classe_id });
+      }
+    });
+
+    // Save the rows to the database
+    for (const row of rows) {
+      await Etudiant.create(row);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "File processed successfully",
+      rowsProcessed: rows.length,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Error processing file",
+      error: error.message,
+    });
+  } finally {
+    // Optionally, delete the file after processing
+    fs.unlink(filePath, (err) => {
+      if (err) console.error("Error deleting file:", err);
+    });
+  }
+};
+
 module.exports = {
   getAllClasses,
   getClassById,
   createClass,
   deleteClass,
   updateClass,
+  saveFromExcelClasse,
 };
