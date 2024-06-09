@@ -1,31 +1,31 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/databaseConnection");
 
-const Niveau_foramtion = sequelize.define(
-  "niveau_fomation",
+const Niveau_formation = sequelize.define(
+  "niveau_formation",
   {
-    niveau_fomation_id: {
+    niveau_formation_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    code_niveau_fomation: {
+    code_niveau_formation: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    lib_niveau_fomation_ara: {
+    lib_niveau_formation_fr: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lib_niveau_formation_ara: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    lib_niveau_fomation_fr: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
   },
   {
-    tableName: "Niveau_foramtions",
+    tableName: "Niveau_formations",
     timestamps: true,
   }
 );
 
-module.exports = Niveau_foramtion;
+module.exports = Niveau_formation;

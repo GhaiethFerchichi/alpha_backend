@@ -4,18 +4,23 @@ const sequelize = require("../config/databaseConnection");
 const Type_Stage = sequelize.define(
   "type_stage",
   {
-    Type_Stage_id: {
+    type_stage_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    lib_Type_Stage_ara: {
+    code_type_stage: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
+      unique: true,
     },
     lib_Type_Stage_fr: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    lib_Type_Stage_ara: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {

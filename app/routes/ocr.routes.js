@@ -1,4 +1,4 @@
-const { ocrImage } = require("../controllers/ocr.controller");
+const { ocrImage } = require("../controllers/Ocr.controller");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");

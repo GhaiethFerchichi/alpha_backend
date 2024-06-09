@@ -1,4 +1,6 @@
+const Formation = require("../models/Formation.model");
 const Niveau_foramtion = require("../models/NiveauFormation.model");
+const Type_Stage = require("../models/TypeStage.model");
 
 /**
  * @swagger
@@ -129,10 +131,16 @@ const createNiveauFormation = async (req, res) => {
   const { body } = req;
   try {
     const newNiveauFormation = await Niveau_foramtion.create({ ...body });
+
+    const newNiveauFormationPopulated = await Niveau_foramtion.findByPk(
+      newNiveauFormation.niveau_formation_id,
+      { include: [Formation, Type_Stage] }
+    );
+
     res.status(201).json({
       success: true,
-      message: `New niveau_formation with id ${newNiveauFormation.niveau_fomation_id} created`,
-      data: newNiveauFormation,
+      message: `New niveau_formation with id ${newNiveauFormation.niveau_formation_id} created`,
+      data: newNiveauFormationPopulated,
     });
   } catch (error) {
     res.status(400).json({
@@ -170,7 +178,7 @@ const deleteNiveauFormation = async (req, res) => {
   const { niveauFormationId } = req.params;
   try {
     const niveau_formation = await Niveau_foramtion.findOne({
-      where: { niveau_fomation_id: niveauFormationId },
+      where: { niveau_formation_id: niveauFormationId },
     });
     if (!niveau_formation)
       return res.status(404).json({
@@ -179,7 +187,7 @@ const deleteNiveauFormation = async (req, res) => {
       });
 
     await Niveau_foramtion.destroy({
-      where: { niveau_fomation_id: niveauFormationId },
+      where: { niveau_formation_id: niveauFormationId },
     });
     res.status(200).json({
       success: true,
@@ -238,10 +246,10 @@ const updateNiveauFormation = async (req, res) => {
   const { niveauFormationId } = req.params;
   const { body } = req;
   try {
-    delete body.niveau_fomation_id;
+    delete body.niveau_formation_id;
     const [updatedRows] = await Niveau_foramtion.update(
       { ...body },
-      { where: { niveau_fomation_id: niveauFormationId } }
+      { where: { niveau_formation_id: niveauFormationId } }
     );
 
     if (updatedRows === 0) {
@@ -252,8 +260,10 @@ const updateNiveauFormation = async (req, res) => {
     }
 
     const updatedNiveauFormation = await Niveau_foramtion.findByPk(
-      niveauFormationId
+      niveauFormationId,
+      { include: [Formation, Type_Stage] }
     );
+
     res.status(200).json({
       success: true,
       message: `Niveau_formation with id ${niveauFormationId} updated`,

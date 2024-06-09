@@ -1,7 +1,6 @@
 const Classe = require("../models/Classe.model");
 const Etudiant = require("../models/Etudiant.model");
-const Formation = require("../models/Formation.model");
-
+const NiveauFormation = require("../models/NiveauFormation.model");
 const ExcelJS = require("exceljs");
 const path = require("path");
 const fs = require("fs");
@@ -34,7 +33,7 @@ const fs = require("fs");
 const getAllClasses = async (_, res) => {
   try {
     const classes = await Classe.findAll({
-      include: Formation,
+      include: NiveauFormation,
     });
     res.status(200).json({
       success: true,
@@ -134,10 +133,14 @@ const createClass = async (req, res) => {
   const { body } = req;
   try {
     const newClass = await Classe.create({ ...body });
+
+    const newClassPopulate = await Classe.findByPk(newClass.classe_id, {
+      include: NiveauFormation,
+    });
     res.status(201).json({
       success: true,
       message: `New class with id ${newClass.classe_id} created`,
-      data: newClass,
+      data: newClassPopulate,
     });
   } catch (error) {
     res.status(400).json({
@@ -267,7 +270,7 @@ const updateClass = async (req, res) => {
 
 const saveFromExcelClasse = async (req, res) => {
   const { file } = req;
-  const { classe_id } = req.params;
+  const { classeId } = req.params;
   const filePath = path.resolve(__dirname, "../uploads/excel", file.filename);
 
   try {
@@ -288,7 +291,7 @@ const saveFromExcelClasse = async (req, res) => {
         const dte_naiss = row.getCell(4).value;
         const phone_nbr = row.getCell(5).value;
 
-        rows.push({ cin, name, email, dte_naiss, phone_nbr, classe_id });
+        rows.push({ cin, name, email, dte_naiss, phone_nbr, classeId });
       }
     });
 

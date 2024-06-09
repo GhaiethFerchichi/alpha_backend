@@ -1,3 +1,4 @@
+const Niveau_formation = require("../models/NiveauFormation.model");
 const Type_Stage = require("../models/TypeStage.model");
 
 /**
@@ -68,8 +69,6 @@ const getAllTypeStages = async (_, res) => {
  *         description: Bad request
  */
 const getTypeStageById = async (req, res) => {
-  // const { type_stage_id } = req.params;
-
   const { type_stage_id } = req.params;
   try {
     const typeStage = await Type_Stage.findByPk(type_stage_id);
@@ -128,9 +127,10 @@ const createTypeStage = async (req, res) => {
   const { body } = req;
   try {
     const newTypeStage = await Type_Stage.create({ ...body });
+
     res.status(201).json({
       success: true,
-      message: `New type stage with id ${newTypeStage.Type_Stage_id} created`,
+      message: `New type stage with id ${newTypeStage.type_stage_id} created`,
       data: newTypeStage,
     });
   } catch (error) {
@@ -168,9 +168,7 @@ const createTypeStage = async (req, res) => {
 const deleteTypeStage = async (req, res) => {
   const { type_stage_id } = req.params;
   try {
-    const typeStage = await Type_Stage.findOne({
-      where: { Type_Stage_id: type_stage_id },
-    });
+    const typeStage = await Type_Stage.findByPk(type_stage_id);
     if (!typeStage)
       return res.status(404).json({
         success: false,
@@ -233,10 +231,10 @@ const updateTypeStage = async (req, res) => {
   const { type_stage_id } = req.params;
   const { body } = req;
   try {
-    delete body.Type_Stage_id;
+    delete body.type_Stage_id;
     const [updatedRows] = await Type_Stage.update(
       { ...body },
-      { where: { Type_Stage_id: type_stage_id } }
+      { where: { type_stage_id: type_stage_id } }
     );
 
     if (updatedRows === 0) {

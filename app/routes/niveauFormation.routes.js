@@ -4,7 +4,7 @@ const {
   getNiveauFormationById,
   updateNiveauFormation,
   deleteNiveauFormation,
-} = require("../controllers/NiveaFormation.controller");
+} = require("../controllers/NiveauFormation.controller");
 
 const niveauFormation = require("express").Router();
 

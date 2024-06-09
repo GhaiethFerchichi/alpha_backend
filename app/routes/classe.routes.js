@@ -33,13 +33,13 @@ const upload = multer({ storage: storage });
 classeRouter.route("/").get(getAllClasses).post(createClass);
 
 classeRouter
-  .route("/:classe_id")
+  .route("/:classeId")
   .get(getClassById)
   .put(updateClass)
   .delete(deleteClass);
 
 classeRouter
-  .route("/excel/:classe_id")
+  .route("/excel/:classeId")
   .post(upload.single("uploaded_excel"), saveFromExcelClasse);
 
 module.exports = classeRouter;
