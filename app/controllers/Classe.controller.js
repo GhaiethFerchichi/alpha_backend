@@ -4,6 +4,8 @@ const NiveauFormation = require("../models/NiveauFormation.model");
 const ExcelJS = require("exceljs");
 const path = require("path");
 const fs = require("fs");
+const Formation = require("../models/Formation.model");
+const Type_Stage = require("../models/TypeStage.model");
 
 /**
  * @swagger
@@ -33,7 +35,7 @@ const fs = require("fs");
 const getAllClasses = async (_, res) => {
   try {
     const classes = await Classe.findAll({
-      include: NiveauFormation,
+      include: [NiveauFormation, Formation, Type_Stage],
     });
     res.status(200).json({
       success: true,

@@ -29,7 +29,9 @@ const Type_Stage = require("../models/TypeStage.model");
  */
 const getAllNiveauFormations = async (_, res) => {
   try {
-    const niveau_formations = await Niveau_foramtion.findAll();
+    const niveau_formations = await Niveau_foramtion.findAll({
+      include: [Formation, Type_Stage],
+    });
     res.status(200).json({
       success: true,
       message: "Get all niveau_formations",
@@ -72,7 +74,10 @@ const getAllNiveauFormations = async (_, res) => {
 const getNiveauFormationById = async (req, res) => {
   const { niveauFormationId } = req.params;
   try {
-    const niveau_formation = await Niveau_foramtion.findByPk(niveauFormationId);
+    const niveau_formation = await Niveau_foramtion.findByPk(
+      niveauFormationId,
+      { include: [Formation, Type_Stage] }
+    );
     if (!niveau_formation)
       return res.status(404).json({
         success: false,
