@@ -291,11 +291,12 @@ const getClasseEtudiants = async (req, res) => {
   const { classeId } = req.params;
 
   try {
-    const etudiantsByClasse = await Etudiant.findAll({
-      where: { classe_id: classeId },
-    });
-
-    console.log(etudiantsByClasse);
+    const etudiantsByClasse = await Etudiant.findAll(
+      {
+        where: { classe_id: classeId },
+      },
+      { include: Classe }
+    );
 
     res.status(200).json({
       success: true,
