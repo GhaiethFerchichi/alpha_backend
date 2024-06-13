@@ -1,3 +1,4 @@
+const Classe = require("../models/Classe.model");
 const Etudiant = require("../models/Etudiant.model");
 
 /**
@@ -70,7 +71,7 @@ const getAllEtudiants = async (_, res) => {
 const getEtudiantById = async (req, res) => {
   const { etudiantId } = req.params;
   try {
-    const etudiant = await Etudiant.findByPk(etudiantId);
+    const etudiant = await Etudiant.findByPk(etudiantId, { include: [Classe] });
     if (!etudiant)
       return res.status(404).json({
         success: false,

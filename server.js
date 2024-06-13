@@ -87,7 +87,7 @@ Stage.belongsTo(Classe, { foreignKey: "classe_id" });
 Stage.belongsTo(Niveau_foramtion, { foreignKey: "niveau_formation_id" });
 
 sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     console.log("Connection to database etablished");
     app.listen(PORT, () => console.log(`Alpha backend listenning on ${PORT}`));

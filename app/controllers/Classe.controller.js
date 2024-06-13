@@ -273,6 +273,7 @@ const updateClass = async (req, res) => {
 const saveFromExcelClasse = async (req, res) => {
   const { file } = req;
   const { classeId } = req.params;
+  console.log(req.params);
   const filePath = path.resolve(__dirname, "../uploads/excel", file.filename);
 
   try {
@@ -293,7 +294,14 @@ const saveFromExcelClasse = async (req, res) => {
         const dte_naiss = row.getCell(4).value;
         const phone_nbr = row.getCell(5).value;
 
-        rows.push({ cin, name, email, dte_naiss, phone_nbr, classeId });
+        rows.push({
+          cin,
+          name,
+          email,
+          dte_naiss,
+          phone_nbr,
+          classe_id: classeId,
+        });
       }
     });
 
@@ -322,6 +330,31 @@ const saveFromExcelClasse = async (req, res) => {
   }
 };
 
+const getClasseEtudiants = async (req, res) => {
+  const { classeId } = req.params;
+
+  try {
+    const etudiantsByClasse = await Etudiant.findAll(
+      {
+        where: { classe_id: classeId },
+      },
+      { include: Classe }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: `Get Etudiants of classe with id ${classeId}`,
+      data: etudiantsByClasse,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error processing file",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getAllClasses,
   getClassById,
@@ -329,4 +362,5 @@ module.exports = {
   deleteClass,
   updateClass,
   saveFromExcelClasse,
+  getClasseEtudiants,
 };

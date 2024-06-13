@@ -5,6 +5,7 @@ const {
   updateClass,
   deleteClass,
   saveFromExcelClasse,
+  getClasseEtudiants,
 } = require("../controllers/Classe.controller");
 
 const path = require("path");
@@ -41,5 +42,7 @@ classeRouter
 classeRouter
   .route("/excel/:classeId")
   .post(upload.single("uploaded_excel"), saveFromExcelClasse);
+
+classeRouter.route("/:classeId/etudiants").get(getClasseEtudiants);
 
 module.exports = classeRouter;
