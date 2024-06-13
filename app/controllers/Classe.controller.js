@@ -35,7 +35,7 @@ const Type_Stage = require("../models/TypeStage.model");
 const getAllClasses = async (_, res) => {
   try {
     const classes = await Classe.findAll({
-      include: [NiveauFormation, Formation, Type_Stage],
+      include: [NiveauFormation],
     });
     res.status(200).json({
       success: true,
