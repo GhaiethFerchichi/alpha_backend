@@ -260,10 +260,62 @@ const updateEtudiant = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /etudiants/classe/{classeId}:
+ *   get:
+ *     summary: Retrieve a list of students in a specific class
+ *     tags: [Etudiants]
+ *     parameters:
+ *       - in: path
+ *         name: classeId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The ID of the class
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved students of the class
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Etudiant'
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
+const getClasseEtudiants = async (req, res) => {
+  const { classeId } = req.params;
+
+  try {
+    const etudiantsByClasse = await Etudiant.findAll({
+      where: { classe_id: classeId },
+    });
+
+    console.log(etudiantsByClasse);
+
+    res.status(200).json({
+      success: true,
+      message: `Get Etudiants of classe with id ${classeId}`,
+      data: etudiantsByClasse,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Contact your administrator",
+      error: error,
+    });
+  }
+};
+
 module.exports = {
   getAllEtudiants,
   getEtudiantById,
   createEtudiant,
   deleteEtudiant,
   updateEtudiant,
+  getClasseEtudiants,
 };

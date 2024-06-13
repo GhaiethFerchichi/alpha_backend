@@ -330,31 +330,6 @@ const saveFromExcelClasse = async (req, res) => {
   }
 };
 
-const getClasseEtudiants = async (req, res) => {
-  const { classeId } = req.params;
-
-  try {
-    const etudiantsByClasse = await Etudiant.findAll(
-      {
-        where: { classe_id: classeId },
-      },
-      { include: Classe }
-    );
-
-    res.status(200).json({
-      success: true,
-      message: `Get Etudiants of classe with id ${classeId}`,
-      data: etudiantsByClasse,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Error processing file",
-      error: error.message,
-    });
-  }
-};
-
 module.exports = {
   getAllClasses,
   getClassById,
@@ -362,5 +337,4 @@ module.exports = {
   deleteClass,
   updateClass,
   saveFromExcelClasse,
-  getClasseEtudiants,
 };

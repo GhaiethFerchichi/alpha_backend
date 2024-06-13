@@ -59,7 +59,7 @@ app.use(`${API_PREFIX}/niveau_formation`, niveauFormation);
 
 app.use(`${API_PREFIX}/supervisor`, supervisorRouter);
 app.use(`${API_PREFIX}/stage`, stageRouter);
-app.use(`${API_PREFIX}/students`, etudiantRouter);
+app.use(`${API_PREFIX}/etudiants`, etudiantRouter);
 app.use(`${API_PREFIX}/ocr`, ocrRouter);
 app.use(`${API_PREFIX}/type_stages`, typeStageRouter);
 
