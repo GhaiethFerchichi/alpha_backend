@@ -30,6 +30,8 @@ const niveauFormation = require("./app/routes/niveauFormation.routes");
 const Niveau_foramtion = require("./app/models/NiveauFormation.model");
 const User = require("./app/models/Users.model");
 const UserType = require("./app/models/UserType.model");
+const departementRouter = require("./app/routes/departement.routes");
+const Departement = require("./app/models/Departement.model");
 
 // Getting the .env Variables
 const PORT = process.env.PORT;
@@ -50,6 +52,7 @@ app.use(
 app.use(`${API_PREFIX}/login`, loginRouter);
 app.use(`${API_PREFIX}/users`, usersRouter);
 
+app.use(`${API_PREFIX}/departements`, departementRouter);
 app.use(`${API_PREFIX}/formations`, formationRouter);
 app.use(`${API_PREFIX}/classes`, classeRouter);
 app.use(`${API_PREFIX}/niveau_formation`, niveauFormation);
@@ -63,6 +66,9 @@ app.use(`${API_PREFIX}/type_stages`, typeStageRouter);
 // Associations
 User.belongsTo(UserType, { foreignKey: "user_type" });
 UserType.hasOne(User, { foreignKey: "user_type" });
+
+Departement.hasMany(Formation, { foreignKey: "departement_id" });
+Formation.belongsTo(Departement, { foreignKey: "departement_id" });
 
 Formation.hasMany(Niveau_foramtion, { foreignKey: "formation_id" });
 Niveau_foramtion.belongsTo(Formation, { foreignKey: "formation_id" });

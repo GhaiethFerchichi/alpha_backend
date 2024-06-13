@@ -1,3 +1,4 @@
+const Departement = require("../models/Departement.model");
 const Formation = require("../models/Formation.model");
 
 /**
@@ -27,7 +28,7 @@ const Formation = require("../models/Formation.model");
  */
 const getAllFormations = async (_, res) => {
   try {
-    const formations = await Formation.findAll();
+    const formations = await Formation.findAll({ include: Departement });
     res.status(200).json({
       success: true,
       message: "Get all formations",
@@ -70,7 +71,9 @@ const getAllFormations = async (_, res) => {
 const getFormationById = async (req, res) => {
   const { formationId } = req.params;
   try {
-    const formation = await Formation.findByPk(formationId);
+    const formation = await Formation.findByPk(formationId, {
+      include: Departement,
+    });
     if (!formation)
       return res.status(404).json({
         success: false,
@@ -244,7 +247,9 @@ const updateFormation = async (req, res) => {
       });
     }
 
-    const updatedFormation = await Formation.findByPk(formationId);
+    const updatedFormation = await Formation.findByPk(formationId, {
+      include: Departement,
+    });
     res.status(200).json({
       success: true,
       message: `Formation with id ${formationId} updated`,
