@@ -8,7 +8,7 @@ const {
 } = require("../controllers/Stage.controller");
 const { authenticateToken } = require("../middlewares/auth_functions");
 
-stageRouter.route("/").get(getAllStages).post(authenticateToken, createStage);
+stageRouter.route("/").get(getAllStages).post(createStage);
 
 stageRouter
   .route("/:stageId")

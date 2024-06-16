@@ -1,4 +1,4 @@
-const studentRouter = require("express").Router();
+const etudiantRouter = require("express").Router();
 
 const {
   createEtudiant,
@@ -10,17 +10,14 @@ const {
 } = require("../controllers/Etudiant.controller");
 const { authenticateToken } = require("../middlewares/auth_functions");
 
-studentRouter
-  .route("/")
-  .get(getAllEtudiants)
-  .post(authenticateToken, createEtudiant);
+etudiantRouter.route("/").get(getAllEtudiants).post(createEtudiant);
 
-studentRouter
+etudiantRouter
   .route("/:etudiantId")
   .get(getEtudiantById)
-  .put(authenticateToken, updateEtudiant)
-  .delete(authenticateToken, deleteEtudiant);
+  .put(updateEtudiant)
+  .delete(deleteEtudiant);
 
-studentRouter.route("/classe/:classeId").get(getClasseEtudiants);
+etudiantRouter.route("/classe/:classeId").get(getClasseEtudiants);
 
-module.exports = studentRouter;
+module.exports = etudiantRouter;

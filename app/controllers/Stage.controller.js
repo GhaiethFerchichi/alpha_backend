@@ -1,5 +1,6 @@
 const Classe = require("../models/Classe.model");
 const Etudiant = require("../models/Etudiant.model");
+const EtudiantStage = require("../models/EtudiantStage.model");
 const Niveau_formation = require("../models/NiveauFormation.model");
 const Stage = require("../models/Stage.model");
 
@@ -137,7 +138,16 @@ const getStageById = async (req, res) => {
 const createStage = async (req, res) => {
   const { body } = req;
   try {
+    const etudiants = [...body.etudiants];
+    console.log(etudiants);
+    delete body.etudiants;
     const newStage = await Stage.create({ ...body });
+
+    etudiants.forEach((etud) => {
+      console.log({ cin: etud, stage_id: newStage.stage_id });
+      EtudiantStage.create({ cin: etud, stage_id: newStage.stage_id });
+    });
+
     res.status(201).json({
       success: true,
       message: `New stage with id ${newStage.stage_id} created`,

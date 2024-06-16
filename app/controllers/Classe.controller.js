@@ -320,7 +320,7 @@ const saveFromExcelClasse = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error processing file",
-      error: error.message,
+      error: error,
     });
   } finally {
     // Optionally, delete the file after processing

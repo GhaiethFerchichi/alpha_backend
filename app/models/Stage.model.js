@@ -1,8 +1,5 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/databaseConnection");
-const Student = require("./Etudiant.model");
-const Project = require("./Project.model");
-const Supervisor = require("./Supervisor.model");
 
 const Stage = sequelize.define(
   "Stage",

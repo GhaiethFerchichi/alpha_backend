@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/databaseConnection");
 
-const Supervisor = sequelize.define(
-  "Supervisor",
+const Encadrant = sequelize.define(
+  "Encadrant",
   {
     supervisor_id: {
       type: DataTypes.INTEGER,
@@ -23,9 +23,9 @@ const Supervisor = sequelize.define(
     },
   },
   {
-    tableName: "Supervisors",
+    tableName: "Encadrants",
     timestamps: true,
   }
 );
 
-module.exports = Supervisor;
+module.exports = Encadrant;

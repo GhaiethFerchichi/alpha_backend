@@ -9,29 +9,33 @@ const swaggerSpec = require("./swagger");
 // Database
 const sequelize = require("./app/config/databaseConnection");
 // Models
+const User = require("./app/models/Users.model");
+const UserType = require("./app/models/UserType.model");
+const Departement = require("./app/models/Departement.model");
+const Formation = require("./app/models/Formation.model");
+const Type_Stage = require("./app/models/TypeStage.model");
+const Classe = require("./app/models/Classe.model");
+const Etudiant = require("./app/models/Etudiant.model");
 const Stage = require("./app/models/Stage.model");
 const Project = require("./app/models/Project.model");
-const Student = require("./app/models/Etudiant.model");
-const Supervisor = require("./app/models/Supervisor.model");
+const Organisme = require("./app/models/Organisme.model");
+const Encadrant = require("./app/models/Encadrant.model");
+
 // Routes
 const usersRouter = require("./app/routes/users.routes");
-const supervisorRouter = require("./app/routes/supervisor.routes");
+const encadrantRouter = require("./app/routes/encadrantRouter.routes");
 const stageRouter = require("./app/routes/stages.routes");
 const etudiantRouter = require("./app/routes/etudiant.routes");
 const ocrRouter = require("./app/routes/ocr.routes");
 const formationRouter = require("./app/routes/fromation.routes");
-const Formation = require("./app/models/Formation.model");
-const Classe = require("./app/models/Classe.model");
-const Type_Stage = require("./app/models/TypeStage.model");
 const typeStageRouter = require("./app/routes/TypeStage.routes");
 const classeRouter = require("./app/routes/classe.routes");
-const Etudiant = require("./app/models/Etudiant.model");
 const niveauFormation = require("./app/routes/niveauFormation.routes");
 const Niveau_foramtion = require("./app/models/NiveauFormation.model");
-const User = require("./app/models/Users.model");
-const UserType = require("./app/models/UserType.model");
 const departementRouter = require("./app/routes/departement.routes");
-const Departement = require("./app/models/Departement.model");
+const organismeRouter = require("./app/routes/organismeRouter.routes");
+const EtudiantStage = require("./app/models/EtudiantStage.model");
+const etudiantStageRouter = require("./app/routes/etudiantStageRouter.routes");
 
 // Getting the .env Variables
 const PORT = process.env.PORT;
@@ -49,6 +53,7 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(swaggerSpec)
 );
+
 app.use(`${API_PREFIX}/login`, loginRouter);
 app.use(`${API_PREFIX}/users`, usersRouter);
 
@@ -56,12 +61,13 @@ app.use(`${API_PREFIX}/departements`, departementRouter);
 app.use(`${API_PREFIX}/formations`, formationRouter);
 app.use(`${API_PREFIX}/classes`, classeRouter);
 app.use(`${API_PREFIX}/niveau_formation`, niveauFormation);
-
-app.use(`${API_PREFIX}/supervisor`, supervisorRouter);
-app.use(`${API_PREFIX}/stage`, stageRouter);
+app.use(`${API_PREFIX}/encadrant`, encadrantRouter);
+app.use(`${API_PREFIX}/stages`, stageRouter);
 app.use(`${API_PREFIX}/etudiants`, etudiantRouter);
 app.use(`${API_PREFIX}/ocr`, ocrRouter);
 app.use(`${API_PREFIX}/type_stages`, typeStageRouter);
+app.use(`${API_PREFIX}/organismes`, organismeRouter);
+app.use(`${API_PREFIX}/etudiantStages`, etudiantStageRouter);
 
 // Associations
 User.belongsTo(UserType, { foreignKey: "user_type" });
@@ -82,12 +88,41 @@ Classe.belongsTo(Niveau_foramtion, { foreignKey: "niveau_formation_id" });
 Classe.hasMany(Etudiant, { foreignKey: "classe_id" });
 Etudiant.belongsTo(Classe, { foreignKey: "classe_id" });
 
-Stage.belongsTo(Etudiant, { foreignKey: "etudiant_cin" });
 Stage.belongsTo(Classe, { foreignKey: "classe_id" });
 Stage.belongsTo(Niveau_foramtion, { foreignKey: "niveau_formation_id" });
 
+Stage.hasOne(Project, { foreignKey: "project_id" });
+Project.belongsTo(Stage, { foreignKey: "project_id" });
+
+Etudiant.belongsToMany(Stage, { through: EtudiantStage, foreignKey: "cin" });
+Stage.belongsToMany(Etudiant, {
+  through: EtudiantStage,
+  foreignKey: "stage_id",
+});
+
+EtudiantStage.belongsTo(Etudiant, { foreignKey: "cin" });
+EtudiantStage.belongsTo(Stage, { foreignKey: "stage_id" });
+
+Etudiant.belongsToMany(Stage, { through: EtudiantStage, foreignKey: "cin" });
+Stage.belongsToMany(Etudiant, {
+  through: EtudiantStage,
+  foreignKey: "stage_id",
+});
+
+EtudiantStage.belongsTo(Etudiant, { foreignKey: "cin" });
+EtudiantStage.belongsTo(Stage, { foreignKey: "stage_id" });
+
+Etudiant.hasMany(EtudiantStage, { foreignKey: "cin" });
+Stage.hasMany(EtudiantStage, { foreignKey: "stage_id" });
+
+Organisme.hasMany(Project, { foreignKey: "organisme_id" });
+Project.belongsTo(Organisme, { foreignKey: "organisme_id" });
+
+Stage.belongsTo(Encadrant, { foreignKey: "encadrant_id" });
+Encadrant.hasOne(Stage, { foreignKey: "encadrant_id" });
+
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     console.log("Connection to database etablished");
     app.listen(PORT, () => console.log(`Alpha backend listenning on ${PORT}`));
