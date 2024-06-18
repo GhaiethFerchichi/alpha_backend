@@ -122,7 +122,7 @@ Stage.belongsTo(Encadrant, { foreignKey: "encadrant_id" });
 Encadrant.hasOne(Stage, { foreignKey: "encadrant_id" });
 
 sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     console.log("Connection to database etablished");
     app.listen(PORT, () => console.log(`Alpha backend listenning on ${PORT}`));

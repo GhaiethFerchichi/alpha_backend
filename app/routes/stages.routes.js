@@ -5,6 +5,7 @@ const {
   createStage,
   deleteStage,
   updateStage,
+  getStageByIDEtudiantFormatted,
 } = require("../controllers/Stage.controller");
 const { authenticateToken } = require("../middlewares/auth_functions");
 
@@ -14,5 +15,7 @@ stageRouter
   .route("/:stageId")
   .get(getStageById)
   .put(authenticateToken, updateStage)
-  .delete(authenticateToken, deleteStage);
+  .delete(deleteStage);
+
+stageRouter.route("/formatted/:stage_id").get(getStageByIDEtudiantFormatted);
 module.exports = stageRouter;

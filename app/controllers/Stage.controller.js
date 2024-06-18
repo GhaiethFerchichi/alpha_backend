@@ -290,10 +290,55 @@ const updateStage = async (req, res) => {
   }
 };
 
+const getStageByIDEtudiantFormatted = async (req, res) => {
+  const { stage_id } = req.params;
+
+  try {
+    const etudiantsOfStage = await EtudiantStage.findAll({
+      where: {
+        stage_id,
+      },
+      include: Etudiant,
+    });
+
+    if (!etudiantsOfStage)
+      return res.status(404).json({
+        success: false,
+        message: "No Students Associated to this Stage",
+      });
+
+    let formatedStudent = {};
+
+    for (let i = 0; i < etudiantsOfStage.length; i++) {
+      formatedStudent = {
+        ...formatedStudent,
+        [`etudiant${i + 1}_cin`]: etudiantsOfStage[i].Etudiant,
+      };
+    }
+    console.log("***********");
+    console.log(formatedStudent);
+
+    const stage = await Stage.findByPk(stage_id);
+
+    res.status(200).json({
+      success: true,
+      message: `Get stage with id ${stage_id} formatted`,
+      data: { ...stage.dataValues, ...formatedStudent },
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Contact your administrator",
+      error,
+    });
+  }
+};
+
 module.exports = {
   getAllStages,
   getStageById,
   createStage,
   deleteStage,
   updateStage,
+  getStageByIDEtudiantFormatted,
 };
