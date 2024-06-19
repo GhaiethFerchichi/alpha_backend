@@ -36,6 +36,7 @@ const departementRouter = require("./app/routes/departement.routes");
 const organismeRouter = require("./app/routes/organismeRouter.routes");
 const EtudiantStage = require("./app/models/EtudiantStage.model");
 const etudiantStageRouter = require("./app/routes/etudiantStageRouter.routes");
+const projectRouter = require("./app/routes/project.routes");
 
 // Getting the .env Variables
 const PORT = process.env.PORT;
@@ -68,6 +69,7 @@ app.use(`${API_PREFIX}/ocr`, ocrRouter);
 app.use(`${API_PREFIX}/type_stages`, typeStageRouter);
 app.use(`${API_PREFIX}/organismes`, organismeRouter);
 app.use(`${API_PREFIX}/etudiantStages`, etudiantStageRouter);
+app.use(`${API_PREFIX}/projects`, projectRouter);
 
 // Associations
 User.belongsTo(UserType, { foreignKey: "user_type" });
@@ -91,8 +93,15 @@ Etudiant.belongsTo(Classe, { foreignKey: "classe_id" });
 Stage.belongsTo(Classe, { foreignKey: "classe_id" });
 Stage.belongsTo(Niveau_foramtion, { foreignKey: "niveau_formation_id" });
 
-Stage.hasOne(Project, { foreignKey: "project_id" });
-Project.belongsTo(Stage, { foreignKey: "project_id" });
+Project.hasOne(Stage, {
+  foreignKey: "project_id",
+  as: "stage",
+});
+
+Stage.belongsTo(Project, {
+  foreignKey: "project_id",
+  as: "project",
+});
 
 Etudiant.belongsToMany(Stage, { through: EtudiantStage, foreignKey: "cin" });
 Stage.belongsToMany(Etudiant, {
@@ -122,7 +131,7 @@ Stage.belongsTo(Encadrant, { foreignKey: "encadrant_id" });
 Encadrant.hasOne(Stage, { foreignKey: "encadrant_id" });
 
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(() => {
     console.log("Connection to database etablished");
     app.listen(PORT, () => console.log(`Alpha backend listenning on ${PORT}`));

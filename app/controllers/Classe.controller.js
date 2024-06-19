@@ -79,7 +79,9 @@ const getAllClasses = async (_, res) => {
 const getClassById = async (req, res) => {
   const { classeId } = req.params;
   try {
-    const classe = await Classe.findByPk(classeId);
+    const classe = await Classe.findByPk(classeId, {
+      include: NiveauFormation,
+    });
     if (!classe)
       return res.status(404).json({
         success: false,
@@ -255,7 +257,9 @@ const updateClass = async (req, res) => {
       });
     }
 
-    const updatedClass = await Classe.findByPk(classeId);
+    const updatedClass = await Classe.findByPk(classeId, {
+      include: NiveauFormation,
+    });
     res.status(200).json({
       success: true,
       message: `Class with id ${classeId} updated`,

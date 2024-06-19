@@ -6,7 +6,7 @@ const {
   deleteProject,
 } = require("../controllers/Project.controller");
 
-const projectRouter = requrie("express").Router();
+const projectRouter = require("express").Router();
 
 projectRouter.route("/").get(getAllProjects).post(createProject);
 

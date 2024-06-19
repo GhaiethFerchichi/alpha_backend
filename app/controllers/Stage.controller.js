@@ -1,7 +1,9 @@
 const Classe = require("../models/Classe.model");
+const Encadrant = require("../models/Encadrant.model");
 const Etudiant = require("../models/Etudiant.model");
 const EtudiantStage = require("../models/EtudiantStage.model");
 const Niveau_formation = require("../models/NiveauFormation.model");
+const Project = require("../models/Project.model");
 const Stage = require("../models/Stage.model");
 
 /**
@@ -32,7 +34,7 @@ const Stage = require("../models/Stage.model");
 const getAllStages = async (req, res) => {
   try {
     const stages = await Stage.findAll({
-      include: [Etudiant, Niveau_formation, Classe],
+      include: [EtudiantStage, Niveau_formation, Classe, Encadrant, Project],
     });
     res.status(200).json({
       success: true,
@@ -77,7 +79,7 @@ const getStageById = async (req, res) => {
   const { stageId } = req.params;
   try {
     const stage = await Stage.findByPk(stageId, {
-      include: [Etudiant, Niveau_formation, Classe],
+      include: [EtudiantStage, Niveau_formation, Classe, Encadrant, Project],
     });
     if (!stage)
       return res.status(404).json({
@@ -190,7 +192,7 @@ const deleteStage = async (req, res) => {
   try {
     const stage = await Stage.findOne({
       where: { stage_id: stageId },
-      include: [Etudiant, Niveau_formation, Classe],
+      include: [EtudiantStage, Niveau_formation, Classe, Encadrant, Project],
     });
     if (!stage)
       return res.status(404).json({
@@ -274,7 +276,7 @@ const updateStage = async (req, res) => {
     }
 
     const updatedStage = await Stage.findByPk(stageId, {
-      include: [Etudiant, Niveau_formation, Classe],
+      include: [EtudiantStage, Niveau_formation, Classe, Project, Encadrant],
     });
     res.status(200).json({
       success: true,

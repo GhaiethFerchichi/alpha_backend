@@ -28,7 +28,7 @@ const Etudiant = require("../models/Etudiant.model");
  */
 const getAllEtudiants = async (_, res) => {
   try {
-    const etudiants = await Etudiant.findAll();
+    const etudiants = await Etudiant.findAll({ include: Classe });
     res.status(200).json({
       success: true,
       message: "Get all etudiants",
@@ -71,7 +71,7 @@ const getAllEtudiants = async (_, res) => {
 const getEtudiantById = async (req, res) => {
   const { etudiantId } = req.params;
   try {
-    const etudiant = await Etudiant.findByPk(etudiantId, { include: [Classe] });
+    const etudiant = await Etudiant.findByPk(etudiantId, { include: Classe });
     if (!etudiant)
       return res.status(404).json({
         success: false,
@@ -245,7 +245,9 @@ const updateEtudiant = async (req, res) => {
       });
     }
 
-    const updatedEtudiant = await Etudiant.findByPk(etudiantId);
+    const updatedEtudiant = await Etudiant.findByPk(etudiantId, {
+      include: Classe,
+    });
     res.status(200).json({
       success: true,
       message: `Etudiant with id ${etudiantId} updated`,

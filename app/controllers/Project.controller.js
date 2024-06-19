@@ -1,3 +1,4 @@
+const Organisme = require("../models/Organisme.model");
 const Project = require("../models/Project.model");
 
 /**
@@ -33,7 +34,7 @@ const Project = require("../models/Project.model");
  */
 const getAllProjects = async (_, res) => {
   try {
-    const projects = await Project.findAll();
+    const projects = await Project.findAll({ include: Organisme });
     res.status(200).json({
       success: true,
       message: "Get all projects",
@@ -93,7 +94,7 @@ const getAllProjects = async (_, res) => {
 const getProjectById = async (req, res) => {
   const { projectId } = req.params;
   try {
-    const project = await Project.findByPk(projectId);
+    const project = await Project.findByPk(projectId, { include: Organisme });
 
     if (!project)
       return res.status(404).json({
@@ -300,7 +301,9 @@ const updateProject = async (req, res) => {
       });
     }
 
-    const updatedProject = await Project.findByPk(projectId);
+    const updatedProject = await Project.findByPk(projectId, {
+      include: Organisme,
+    });
     res.status(200).json({
       success: true,
       message: `Project with id ${projectId} updated`,
