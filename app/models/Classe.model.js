@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/databaseConnection");
 
 const Classe = sequelize.define(
-  "classe",
+  "Classe",
   {
     classe_id: {
       type: DataTypes.INTEGER,
@@ -23,7 +23,7 @@ const Classe = sequelize.define(
     },
   },
   {
-    tableName: "Classes",
+    tableName: "Classe",
     timestamps: true,
   }
 );

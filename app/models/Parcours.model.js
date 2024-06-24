@@ -1,32 +1,31 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/databaseConnection");
 
-const Type_Stage = sequelize.define(
-  "Type_Stage",
+const Parcour = sequelize.define(
+  "Parcour",
   {
-    type_stage_id: {
+    parcour_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    code_type_stage: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    lib_Type_Stage_fr: {
+    code_parcour: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    lib_Type_Stage_ara: {
+    lib_parcour_ara: {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    lib_parcour_fr: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
-    tableName: "Type_Stage",
+    tableName: "Parcour",
     timestamps: true,
   }
 );
 
-module.exports = Type_Stage;
+module.exports = Parcour;

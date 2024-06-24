@@ -23,7 +23,7 @@ const Encadrant = sequelize.define(
     },
   },
   {
-    tableName: "Encadrants",
+    tableName: "Encadrant",
     timestamps: true,
   }
 );

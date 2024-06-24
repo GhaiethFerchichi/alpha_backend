@@ -23,7 +23,7 @@ const Formation = sequelize.define(
     },
   },
   {
-    tableName: "Formations",
+    tableName: "Formation",
     timestamps: true,
   }
 );

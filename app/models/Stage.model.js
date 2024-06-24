@@ -27,7 +27,7 @@ const Stage = sequelize.define(
     },
   },
   {
-    tableName: "Stages",
+    tableName: "Stage",
     timestamps: true,
   }
 );

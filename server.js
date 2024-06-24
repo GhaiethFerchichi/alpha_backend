@@ -20,10 +20,14 @@ const Stage = require("./app/models/Stage.model");
 const Project = require("./app/models/Project.model");
 const Organisme = require("./app/models/Organisme.model");
 const Encadrant = require("./app/models/Encadrant.model");
+const Niveau_formation = require("./app/models/NiveauFormation.model");
+const EtudiantStage = require("./app/models/EtudiantStage.model");
+const Parcour = require("./app/models/Parcours.model");
+const Annee_Universitaire = require("./app/models/AnneeUniversitaire.model");
 
 // Routes
 const usersRouter = require("./app/routes/users.routes");
-const encadrantRouter = require("./app/routes/encadrantRouter.routes");
+const encadrantRouter = require("./app/routes/encadrant.routes");
 const stageRouter = require("./app/routes/stages.routes");
 const etudiantRouter = require("./app/routes/etudiant.routes");
 const ocrRouter = require("./app/routes/ocr.routes");
@@ -31,12 +35,11 @@ const formationRouter = require("./app/routes/fromation.routes");
 const typeStageRouter = require("./app/routes/TypeStage.routes");
 const classeRouter = require("./app/routes/classe.routes");
 const niveauFormation = require("./app/routes/niveauFormation.routes");
-const Niveau_foramtion = require("./app/models/NiveauFormation.model");
 const departementRouter = require("./app/routes/departement.routes");
-const organismeRouter = require("./app/routes/organismeRouter.routes");
-const EtudiantStage = require("./app/models/EtudiantStage.model");
-const etudiantStageRouter = require("./app/routes/etudiantStageRouter.routes");
+const organismeRouter = require("./app/routes/organisme.routes");
+const etudiantStageRouter = require("./app/routes/etudiantStage.routes");
 const projectRouter = require("./app/routes/project.routes");
+const parcourRouter = require("./app/routes/parcour.routes");
 
 // Getting the .env Variables
 const PORT = process.env.PORT;
@@ -70,6 +73,7 @@ app.use(`${API_PREFIX}/type_stages`, typeStageRouter);
 app.use(`${API_PREFIX}/organismes`, organismeRouter);
 app.use(`${API_PREFIX}/etudiantStages`, etudiantStageRouter);
 app.use(`${API_PREFIX}/projects`, projectRouter);
+app.use(`${API_PREFIX}/parcours`, parcourRouter);
 
 // Associations
 User.belongsTo(UserType, { foreignKey: "user_type" });
@@ -78,29 +82,34 @@ UserType.hasOne(User, { foreignKey: "user_type" });
 Departement.hasMany(Formation, { foreignKey: "departement_id" });
 Formation.belongsTo(Departement, { foreignKey: "departement_id" });
 
-Formation.hasMany(Niveau_foramtion, { foreignKey: "formation_id" });
-Niveau_foramtion.belongsTo(Formation, { foreignKey: "formation_id" });
+Annee_Universitaire.hasMany(Formation, {
+  foreignKey: "annee_universitaire_id",
+});
+Formation.belongsTo(Annee_Universitaire, {
+  foreignKey: "annee_universitaire_id",
+});
 
-Niveau_foramtion.belongsTo(Type_Stage, { foreignKey: "type_stage_id" });
-Type_Stage.hasOne(Niveau_foramtion, { foreignKey: "type_stage_id" });
+Formation.hasMany(Niveau_formation, { foreignKey: "formation_id" });
+Niveau_formation.belongsTo(Formation, { foreignKey: "formation_id" });
 
-Niveau_foramtion.hasMany(Classe, { foreignKey: "niveau_formation_id" });
-Classe.belongsTo(Niveau_foramtion, { foreignKey: "niveau_formation_id" });
+Niveau_formation.belongsTo(Type_Stage, { foreignKey: "type_stage_id" });
+Type_Stage.hasOne(Niveau_formation, { foreignKey: "type_stage_id" });
+
+Niveau_formation.hasMany(Classe, { foreignKey: "niveau_formation_id" });
+Classe.belongsTo(Niveau_formation, { foreignKey: "niveau_formation_id" });
 
 Classe.hasMany(Etudiant, { foreignKey: "classe_id" });
 Etudiant.belongsTo(Classe, { foreignKey: "classe_id" });
 
 Stage.belongsTo(Classe, { foreignKey: "classe_id" });
-Stage.belongsTo(Niveau_foramtion, { foreignKey: "niveau_formation_id" });
+Stage.belongsTo(Niveau_formation, { foreignKey: "niveau_formation_id" });
 
 Project.hasOne(Stage, {
   foreignKey: "project_id",
-  as: "stage",
 });
 
 Stage.belongsTo(Project, {
   foreignKey: "project_id",
-  as: "project",
 });
 
 Etudiant.belongsToMany(Stage, { through: EtudiantStage, foreignKey: "cin" });
@@ -129,6 +138,14 @@ Project.belongsTo(Organisme, { foreignKey: "organisme_id" });
 
 Stage.belongsTo(Encadrant, { foreignKey: "encadrant_id" });
 Encadrant.hasOne(Stage, { foreignKey: "encadrant_id" });
+
+Parcour.hasMany(Niveau_formation, {
+  foreignKey: "parcour_id",
+});
+
+Niveau_formation.belongsTo(Parcour, {
+  foreignKey: "parcour_id",
+});
 
 sequelize
   .sync({ force: true })

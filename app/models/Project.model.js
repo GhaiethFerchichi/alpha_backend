@@ -23,7 +23,7 @@ const Project = sequelize.define(
     },
   },
   {
-    tableName: "Projects",
+    tableName: "Project",
     timestamps: true,
   }
 );

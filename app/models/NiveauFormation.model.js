@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/databaseConnection");
 
 const Niveau_formation = sequelize.define(
-  "niveau_formation",
+  "Niveau_formation",
   {
     niveau_formation_id: {
       type: DataTypes.INTEGER,
@@ -23,7 +23,7 @@ const Niveau_formation = sequelize.define(
     },
   },
   {
-    tableName: "Niveau_formations",
+    tableName: "Niveau_formation",
     timestamps: true,
   }
 );

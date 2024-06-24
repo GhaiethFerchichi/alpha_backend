@@ -25,9 +25,11 @@ const Organisme = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    site_web: { type: DataTypes.STRING, allowNull: true },
+    geoloc: { type: DataTypes.STRING, allowNull: true },
   },
   {
-    tableName: "Organismes",
+    tableName: "Organisme",
     timestamps: true,
   }
 );
