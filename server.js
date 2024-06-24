@@ -40,6 +40,7 @@ const organismeRouter = require("./app/routes/organisme.routes");
 const etudiantStageRouter = require("./app/routes/etudiantStage.routes");
 const projectRouter = require("./app/routes/project.routes");
 const parcourRouter = require("./app/routes/parcour.routes");
+const anneeUniversitaireRouter = require("./app/routes/anneeUniversitaire.routes");
 
 // Getting the .env Variables
 const PORT = process.env.PORT;
@@ -74,6 +75,7 @@ app.use(`${API_PREFIX}/organismes`, organismeRouter);
 app.use(`${API_PREFIX}/etudiantStages`, etudiantStageRouter);
 app.use(`${API_PREFIX}/projects`, projectRouter);
 app.use(`${API_PREFIX}/parcours`, parcourRouter);
+app.use(`${API_PREFIX}/annee_universitaire`, anneeUniversitaireRouter);
 
 // Associations
 User.belongsTo(UserType, { foreignKey: "user_type" });
