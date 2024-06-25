@@ -61,7 +61,6 @@ app.use(
 
 app.use(`${API_PREFIX}/login`, loginRouter);
 app.use(`${API_PREFIX}/users`, usersRouter);
-
 app.use(`${API_PREFIX}/departements`, departementRouter);
 app.use(`${API_PREFIX}/formations`, formationRouter);
 app.use(`${API_PREFIX}/classes`, classeRouter);

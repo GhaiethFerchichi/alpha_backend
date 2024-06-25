@@ -5,7 +5,8 @@ const Annee_Universitaire = sequelize.define(
   "Annee_Universitaire",
   {
     annéee_universitaire_id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
     annee_universitaire: {
