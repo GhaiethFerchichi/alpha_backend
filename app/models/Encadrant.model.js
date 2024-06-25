@@ -13,10 +13,6 @@ const Encadrant = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    department: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-    },
     contact_info: {
       type: DataTypes.STRING(100),
       allowNull: true,

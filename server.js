@@ -149,6 +149,9 @@ Niveau_formation.belongsTo(Parcour, {
   foreignKey: "parcour_id",
 });
 
+Departement.hasMany(Encadrant, { foreignKey: "departement_id" });
+Encadrant.belongsTo(Departement, { foreignKey: "departement_id" });
+
 sequelize
   .sync({ force: true })
   .then(() => {
