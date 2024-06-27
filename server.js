@@ -41,6 +41,7 @@ const etudiantStageRouter = require("./app/routes/etudiantStage.routes");
 const projectRouter = require("./app/routes/project.routes");
 const parcoursRouter = require("./app/routes/parcours.routes");
 const anneeUniversitaireRouter = require("./app/routes/anneeUniversitaire.routes");
+const userTypeRouter = require("./app/routes/usertype.routes");
 
 // Getting the .env Variables
 const PORT = process.env.PORT;
@@ -75,6 +76,7 @@ app.use(`${API_PREFIX}/etudiantStages`, etudiantStageRouter);
 app.use(`${API_PREFIX}/projects`, projectRouter);
 app.use(`${API_PREFIX}/parcours`, parcoursRouter);
 app.use(`${API_PREFIX}/annee_universitaire`, anneeUniversitaireRouter);
+app.use(`${API_PREFIX}/usertypes`, userTypeRouter);
 
 // Associations
 User.belongsTo(UserType, { foreignKey: "user_type" });
@@ -152,7 +154,7 @@ Departement.hasMany(Encadrant, { foreignKey: "departement_id" });
 Encadrant.belongsTo(Departement, { foreignKey: "departement_id" });
 
 sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     console.log("Connection to database etablished");
     app.listen(PORT, () => console.log(`Alpha backend listenning on ${PORT}`));
