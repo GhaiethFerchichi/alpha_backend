@@ -4,7 +4,7 @@ const sequelize = require("../config/databaseConnection");
 const Encadrant = sequelize.define(
   "Encadrant",
   {
-    supervisor_id: {
+    encadrant_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,

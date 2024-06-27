@@ -6,14 +6,14 @@ const {
   deleteParcour,
 } = require("../controllers/Parcour.controller");
 
-const parcourRouter = require("express").Router();
+const parcoursRouter = require("express").Router();
 
-parcourRouter.route("/").get(getAllParcours).post(createParcour);
+parcoursRouter.route("/").get(getAllParcours).post(createParcour);
 
-parcourRouter
+parcoursRouter
   .route("/:parcourId")
   .get(getParcourById)
   .put(updateParcour)
   .delete(deleteParcour);
 
-module.exports = parcourRouter;
+module.exports = parcoursRouter;

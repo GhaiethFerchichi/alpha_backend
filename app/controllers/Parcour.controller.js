@@ -1,4 +1,4 @@
-const Parcour = require("../models/Parcours.model");
+const Parcours = require("../models/Parcours.model");
 
 /**
  * @swagger
@@ -27,7 +27,7 @@ const Parcour = require("../models/Parcours.model");
  */
 const getAllParcours = async (_, res) => {
   try {
-    const parcours = await Parcour.findAll();
+    const parcours = await Parcours.findAll();
     res.status(200).json({
       success: true,
       message: "Get all parcours",
@@ -70,7 +70,7 @@ const getAllParcours = async (_, res) => {
 const getParcourById = async (req, res) => {
   const { parcourId } = req.params;
   try {
-    const parcour = await Parcour.findByPk(parcourId);
+    const parcour = await Parcours.findByPk(parcourId);
     if (!parcour)
       return res.status(404).json({
         success: false,
@@ -128,13 +128,13 @@ const getParcourById = async (req, res) => {
 const createParcour = async (req, res) => {
   const { body } = req;
   try {
-    const newParcour = await Parcour.create({ ...body });
+    const newParcours = await Parcours.create({ ...body });
 
-    const newParcourPopulate = await Parcour.findByPk(newParcour.parcours_id);
+    const newParcoursPopulate = await Parcours.findByPk(newParcour.parcours_id);
     res.status(201).json({
       success: true,
-      message: `New parcour with id ${newParcour.parcours_id} created`,
-      data: newParcourPopulate,
+      message: `New parcour with id ${newParcours.parcours_id} created`,
+      data: newParcoursPopulate,
     });
   } catch (error) {
     res.status(400).json({
@@ -171,8 +171,8 @@ const createParcour = async (req, res) => {
 const deleteParcour = async (req, res) => {
   const { parcourId } = req.params;
   try {
-    const parcour = await Parcour.findOne({
-      where: { parcours_id: parcourId },
+    const Parcours = await Parcours.findOne({
+      where: { parcour_id: parcourId },
     });
     if (!parcour)
       return res.status(404).json({
@@ -238,10 +238,10 @@ const updateParcour = async (req, res) => {
   const { parcourId } = req.params;
   const { body } = req;
   try {
-    delete body.parcours_id;
-    const [updatedRows] = await Parcour.update(
+    delete body.parcour_id;
+    const [updatedRows] = await Parcours.update(
       { ...body },
-      { where: { parcours_id: parcourId } }
+      { where: { parcour_id: parcourId } }
     );
 
     if (updatedRows === 0) {
@@ -251,11 +251,11 @@ const updateParcour = async (req, res) => {
       });
     }
 
-    const updatedParcour = await Parcour.findByPk(parcourId);
+    const updatedParcours = await Parcours.findByPk(parcourId);
     res.status(200).json({
       success: true,
       message: `Parcour with id ${parcourId} updated`,
-      data: updatedParcour,
+      data: updatedParcours,
     });
   } catch (error) {
     res.status(400).json({

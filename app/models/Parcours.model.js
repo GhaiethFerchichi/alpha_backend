@@ -1,31 +1,31 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/databaseConnection");
 
-const Parcour = sequelize.define(
-  "Parcour",
+const Parcours = sequelize.define(
+  "Parcours",
   {
-    parcour_id: {
+    parcours_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    code_parcour: {
+    code_parcours: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    lib_parcour_ara: {
+    lib_parcours_ara: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    lib_parcour_fr: {
+    lib_parcours_fr: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   },
   {
-    tableName: "Parcour",
+    tableName: "Parcours",
     timestamps: true,
   }
 );
 
-module.exports = Parcour;
+module.exports = Parcours;

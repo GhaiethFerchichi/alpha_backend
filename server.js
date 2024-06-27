@@ -22,7 +22,7 @@ const Organisme = require("./app/models/Organisme.model");
 const Encadrant = require("./app/models/Encadrant.model");
 const Niveau_formation = require("./app/models/NiveauFormation.model");
 const EtudiantStage = require("./app/models/EtudiantStage.model");
-const Parcour = require("./app/models/Parcours.model");
+const Parcours = require("./app/models/Parcours.model");
 const Annee_Universitaire = require("./app/models/AnneeUniversitaire.model");
 
 // Routes
@@ -39,7 +39,7 @@ const departementRouter = require("./app/routes/departement.routes");
 const organismeRouter = require("./app/routes/organisme.routes");
 const etudiantStageRouter = require("./app/routes/etudiantStage.routes");
 const projectRouter = require("./app/routes/project.routes");
-const parcourRouter = require("./app/routes/parcour.routes");
+const parcoursRouter = require("./app/routes/parcours.routes");
 const anneeUniversitaireRouter = require("./app/routes/anneeUniversitaire.routes");
 
 // Getting the .env Variables
@@ -73,7 +73,7 @@ app.use(`${API_PREFIX}/type_stages`, typeStageRouter);
 app.use(`${API_PREFIX}/organismes`, organismeRouter);
 app.use(`${API_PREFIX}/etudiantStages`, etudiantStageRouter);
 app.use(`${API_PREFIX}/projects`, projectRouter);
-app.use(`${API_PREFIX}/parcours`, parcourRouter);
+app.use(`${API_PREFIX}/parcours`, parcoursRouter);
 app.use(`${API_PREFIX}/annee_universitaire`, anneeUniversitaireRouter);
 
 // Associations
@@ -140,11 +140,11 @@ Project.belongsTo(Organisme, { foreignKey: "organisme_id" });
 Stage.belongsTo(Encadrant, { foreignKey: "encadrant_id" });
 Encadrant.hasOne(Stage, { foreignKey: "encadrant_id" });
 
-Parcour.hasMany(Niveau_formation, {
+Parcours.hasMany(Niveau_formation, {
   foreignKey: "parcour_id",
 });
 
-Niveau_formation.belongsTo(Parcour, {
+Niveau_formation.belongsTo(Parcours, {
   foreignKey: "parcour_id",
 });
 

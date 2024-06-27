@@ -4,7 +4,7 @@ const sequelize = require("../config/databaseConnection");
 const Annee_Universitaire = sequelize.define(
   "Annee_Universitaire",
   {
-    annéee_universitaire_id: {
+    annee_universitaire_id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
