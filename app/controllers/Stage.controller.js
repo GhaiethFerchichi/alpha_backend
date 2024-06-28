@@ -37,10 +37,31 @@ const getAllStages = async (req, res) => {
       include: [EtudiantStage, Niveau_formation, Classe, Encadrant, Project],
     });
 
+    const newData = [];
+    for (let index = 0; index < stages.length; index++) {
+      const element = stages[index];
+
+      const etudiantsCinList = await EtudiantStage.findAll(
+        { attributes: ["cin"] },
+        {
+          where: { stage_id: element.stage_id },
+        }
+      );
+
+      const Etudiants = await Etudiant.findAll({
+        where: { cin: [etudiantsCinList.map((el) => el.dataValues.cin)] },
+      });
+
+      newData.push({
+        ...element.dataValues,
+        Etudiants: Etudiants.map((el) => el.dataValues),
+      });
+    }
+
     res.status(200).json({
       success: true,
       message: "Get all stages",
-      data: stages,
+      data: newData,
     });
   } catch (error) {
     res.status(400).json({
@@ -95,8 +116,6 @@ const getStageById = async (req, res) => {
         where: { stage_id: stageId },
       }
     );
-
-    // console.log(etudiantsCinList.map((el) => el.dataValues.cin));
 
     const Etudiants = await Etudiant.findAll({
       where: { cin: [etudiantsCinList.map((el) => el.dataValues.cin)] },
