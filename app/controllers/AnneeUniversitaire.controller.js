@@ -127,7 +127,7 @@ const createAnneeUniversitaire = async (req, res) => {
     const newAnneeUniversitaire = await Annee_Universitaire.create({ ...body });
     res.status(201).json({
       success: true,
-      message: `New university year created with id ${newAnneeUniversitaire.annéee_universitaire_id}`,
+      message: `New university year created with id ${newAnneeUniversitaire.annee_universitaire_id}`,
       data: newAnneeUniversitaire,
     });
   } catch (error) {
@@ -166,7 +166,7 @@ const deleteAnneeUniversitaire = async (req, res) => {
   const { anneeUniversitaireId } = req.params;
   try {
     const anneeUniversitaire = await Annee_Universitaire.findOne({
-      where: { annéee_universitaire_id: anneeUniversitaireId },
+      where: { annee_universitaire_id: anneeUniversitaireId },
     });
     if (!anneeUniversitaire)
       return res.status(404).json({
@@ -175,7 +175,7 @@ const deleteAnneeUniversitaire = async (req, res) => {
       });
 
     await Annee_Universitaire.destroy({
-      where: { annéee_universitaire_id: anneeUniversitaireId },
+      where: { annee_universitaire_id: anneeUniversitaireId },
     });
     res.status(200).json({
       success: true,
@@ -230,10 +230,10 @@ const updateAnneeUniversitaire = async (req, res) => {
   const { anneeUniversitaireId } = req.params;
   const { body } = req;
   try {
-    delete body.annéee_universitaire_id;
+    delete body.annee_universitaire_id;
     const [updatedRows] = await Annee_Universitaire.update(
       { ...body },
-      { where: { annéee_universitaire_id: anneeUniversitaireId } }
+      { where: { annee_universitaire_id: anneeUniversitaireId } }
     );
 
     if (updatedRows === 0) {

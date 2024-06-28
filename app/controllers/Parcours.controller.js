@@ -44,13 +44,13 @@ const getAllParcours = async (_, res) => {
 
 /**
  * @swagger
- * /parcours/{parcourId}:
+ * /parcours/{parcoursId}:
  *   get:
  *     summary: Get a parcour by ID
  *     tags: [Parcours]
  *     parameters:
  *       - in: path
- *         name: parcourId
+ *         name: parcoursId
  *         schema:
  *           type: integer
  *         required: true
@@ -68,19 +68,19 @@ const getAllParcours = async (_, res) => {
  *         description: Bad request
  */
 const getParcourById = async (req, res) => {
-  const { parcourId } = req.params;
+  const { parcoursId } = req.params;
   try {
-    const parcour = await Parcours.findByPk(parcourId);
-    if (!parcour)
+    const parcours = await Parcours.findByPk(parcoursId);
+    if (!parcours)
       return res.status(404).json({
         success: false,
-        message: `Parcour with id ${parcourId} not found`,
+        message: `Parcour with id ${parcoursId} not found`,
       });
 
     res.status(200).json({
       success: true,
-      message: `Get parcour with id ${parcourId}`,
-      data: parcour,
+      message: `Get parcour with id ${parcoursId}`,
+      data: parcours,
     });
   } catch (error) {
     res.status(400).json({
@@ -130,7 +130,10 @@ const createParcour = async (req, res) => {
   try {
     const newParcours = await Parcours.create({ ...body });
 
-    const newParcoursPopulate = await Parcours.findByPk(newParcour.parcours_id);
+    const newParcoursPopulate = await Parcours.findByPk(
+      newParcours.parcours_id
+    );
+
     res.status(201).json({
       success: true,
       message: `New parcour with id ${newParcours.parcours_id} created`,
@@ -147,7 +150,7 @@ const createParcour = async (req, res) => {
 
 /**
  * @swagger
- * /parcours/{parcourId}:
+ * /parcours/{parcoursId}:
  *   delete:
  *     summary: Delete a parcour by ID
  *     tags: [Parcours]
@@ -155,7 +158,7 @@ const createParcour = async (req, res) => {
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: parcourId
+ *         name: parcoursId
  *         schema:
  *           type: integer
  *         required: true
@@ -169,21 +172,21 @@ const createParcour = async (req, res) => {
  *         description: Bad request
  */
 const deleteParcour = async (req, res) => {
-  const { parcourId } = req.params;
+  const { parcoursId } = req.params;
   try {
     const Parcours = await Parcours.findOne({
-      where: { parcour_id: parcourId },
+      where: { parcours_id: parcoursId },
     });
     if (!parcour)
       return res.status(404).json({
         success: false,
-        message: `Parcour with id ${parcourId} not found`,
+        message: `Parcour with id ${parcoursId} not found`,
       });
 
-    await Parcour.destroy({ where: { parcours_id: parcourId } });
+    await Parcour.destroy({ where: { parcours_id: parcoursId } });
     res.status(200).json({
       success: true,
-      message: `Parcour with id ${parcourId} deleted`,
+      message: `Parcour with id ${parcoursId} deleted`,
     });
   } catch (error) {
     res.status(400).json({
@@ -196,7 +199,7 @@ const deleteParcour = async (req, res) => {
 
 /**
  * @swagger
- * /parcours/{parcourId}:
+ * /parcours/{parcoursId}:
  *   put:
  *     summary: Update a parcour by ID
  *     tags: [Parcours]
@@ -204,7 +207,7 @@ const deleteParcour = async (req, res) => {
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: parcourId
+ *         name: parcoursId
  *         schema:
  *           type: integer
  *         required: true
@@ -235,26 +238,26 @@ const deleteParcour = async (req, res) => {
  *         description: Bad request
  */
 const updateParcour = async (req, res) => {
-  const { parcourId } = req.params;
+  const { parcoursId } = req.params;
   const { body } = req;
   try {
-    delete body.parcour_id;
+    delete body.parcours_id;
     const [updatedRows] = await Parcours.update(
       { ...body },
-      { where: { parcour_id: parcourId } }
+      { where: { parcours_id: parcoursId } }
     );
 
     if (updatedRows === 0) {
       return res.status(404).json({
         success: false,
-        message: `Parcour with id ${parcourId} not found or no changes made`,
+        message: `Parcour with id ${parcoursId} not found or no changes made`,
       });
     }
 
-    const updatedParcours = await Parcours.findByPk(parcourId);
+    const updatedParcours = await Parcours.findByPk(parcoursId);
     res.status(200).json({
       success: true,
-      message: `Parcour with id ${parcourId} updated`,
+      message: `Parcour with id ${parcoursId} updated`,
       data: updatedParcours,
     });
   } catch (error) {

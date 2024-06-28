@@ -4,14 +4,14 @@ const {
   getParcourById,
   updateParcour,
   deleteParcour,
-} = require("../controllers/Parcour.controller");
+} = require("../controllers/Parcours.controller");
 
 const parcoursRouter = require("express").Router();
 
 parcoursRouter.route("/").get(getAllParcours).post(createParcour);
 
 parcoursRouter
-  .route("/:parcourId")
+  .route("/:parcoursId")
   .get(getParcourById)
   .put(updateParcour)
   .delete(deleteParcour);
