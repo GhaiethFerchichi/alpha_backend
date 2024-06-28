@@ -36,6 +36,7 @@ const getAllStages = async (req, res) => {
     const stages = await Stage.findAll({
       include: [EtudiantStage, Niveau_formation, Classe, Encadrant, Project],
     });
+
     res.status(200).json({
       success: true,
       message: "Get all stages",
@@ -81,16 +82,32 @@ const getStageById = async (req, res) => {
     const stage = await Stage.findByPk(stageId, {
       include: [EtudiantStage, Niveau_formation, Classe, Encadrant, Project],
     });
+
     if (!stage)
       return res.status(404).json({
         success: false,
         message: `Stage with id ${stageId} not found`,
       });
 
+    const etudiantsCinList = await EtudiantStage.findAll(
+      { attributes: ["cin"] },
+      {
+        where: { stage_id: stageId },
+      }
+    );
+
+    // console.log(etudiantsCinList.map((el) => el.dataValues.cin));
+
+    const Etudiants = await Etudiant.findAll({
+      where: { cin: [etudiantsCinList.map((el) => el.dataValues.cin)] },
+    });
+
+    const newData = { ...stage.dataValues, Etudiants };
+
     res.status(200).json({
       success: true,
       message: `Get stage with id ${stageId}`,
-      data: stage,
+      data: newData,
     });
   } catch (error) {
     res.status(400).json({
