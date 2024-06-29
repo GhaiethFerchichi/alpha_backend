@@ -17,6 +17,10 @@ const Encadrant = sequelize.define(
       type: DataTypes.STRING(100),
       allowNull: true,
     },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     tableName: "Encadrant",

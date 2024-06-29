@@ -25,6 +25,10 @@ const Stage = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    date_soutenance: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     tableName: "Stage",
