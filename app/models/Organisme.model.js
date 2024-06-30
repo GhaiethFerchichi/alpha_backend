@@ -25,6 +25,10 @@ const Organisme = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    Responsable: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     email: { type: DataTypes.STRING, allowNull: false },
     site_web: { type: DataTypes.STRING, allowNull: true },
     geoloc: { type: DataTypes.STRING, allowNull: true },
