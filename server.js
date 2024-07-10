@@ -42,6 +42,7 @@ const projectRouter = require("./app/routes/project.routes");
 const parcoursRouter = require("./app/routes/parcours.routes");
 const anneeUniversitaireRouter = require("./app/routes/anneeUniversitaire.routes");
 const userTypeRouter = require("./app/routes/usertype.routes");
+const Jure = require("./app/models/Jure.models");
 
 // Getting the .env Variables
 const PORT = process.env.PORT;
@@ -152,6 +153,9 @@ Niveau_formation.belongsTo(Parcours, {
 
 Departement.hasMany(Encadrant, { foreignKey: "departement_id" });
 Encadrant.belongsTo(Departement, { foreignKey: "departement_id" });
+
+// Stage.belongsToMany(Jure, { through: "stage_jury" });
+// Jure.belongsToMany(Stage, { through: "stage_jury" });
 
 sequelize
   .sync({ force: false })

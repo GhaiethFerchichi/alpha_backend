@@ -298,7 +298,19 @@ const updateStage = async (req, res) => {
   const { stageId } = req.params;
   const { body } = req;
   try {
+    const etudiants = [...body.etudiants];
+
+    // const newStage = await Stage.create({ ...body });
+
+    await EtudiantStage.destroy({ where: { stage_id: body.stage_id } });
+
+    etudiants.forEach((etud) => {
+      EtudiantStage.create({ cin: etud, stage_id: newStage.stage_id });
+    });
+
     delete body.stage_id;
+    delete body.etudiants;
+
     const [updatedRows] = await Stage.update(
       { ...body },
       { where: { stage_id: stageId } }
