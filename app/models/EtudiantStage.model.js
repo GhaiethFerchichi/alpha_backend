@@ -5,7 +5,7 @@ const Etudiant = require("./Etudiant.model");
 const Stage = require("./Stage.model");
 
 const EtudiantStage = sequelize.define(
-  "EtudiantStage",
+  "Soutenance",
   {
     etudiant_stage_id: {
       type: DataTypes.INTEGER,
@@ -30,9 +30,11 @@ const EtudiantStage = sequelize.define(
       onUpdate: "CASCADE",
       onDelete: "CASCADE",
     },
+    note: { type: DataTypes.DECIMAL, allowNull: true },
+    observation: { type: DataTypes.STRING, allowNull: true },
   },
   {
-    tableName: "etudiant_stage",
+    tableName: "Soutenance",
     timestamps: true,
   }
 );

@@ -40,13 +40,13 @@ const getAllStages = async (req, res) => {
     const newData = [];
     for (let index = 0; index < stages.length; index++) {
       const element = stages[index];
+      console.log(element.dataValues.stage_id);
+      // console.log(element);
+      const etudiantsCinList = await EtudiantStage.findAll({
+        where: { stage_id: element.dataValues.stage_id },
+      });
 
-      const etudiantsCinList = await EtudiantStage.findAll(
-        { attributes: ["cin"] },
-        {
-          where: { stage_id: element.stage_id },
-        }
-      );
+      console.log(etudiantsCinList);
 
       const Etudiants = await Etudiant.findAll({
         where: { cin: [etudiantsCinList.map((el) => el.dataValues.cin)] },

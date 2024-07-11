@@ -25,7 +25,11 @@ const Organisme = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    Responsable: {
+    Responsable_org: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    Responsable_stg: {
       type: DataTypes.STRING,
       allowNull: true,
     },
